@@ -20,8 +20,9 @@ async function getPhotographerWork(photographerId) {
 	let photographerWork = [];
 	works.forEach(element => {
 		if (element.photographerId == photographerId) {
+			element = new mediaFactory(element);
 			photographerWork.push(element);
-			mediaSlideshow.push({image: element.image, title: element.title});
+			mediaSlideshow.push({ image: element.image, title: element.title });
 		}
 	});
 
@@ -51,13 +52,12 @@ async function displayPhotographerHeader(info) {
 async function displayPhotographerCards(medias) {
 	const cardsSection = document.querySelector(".photograph-cards");
 
-	medias.forEach(function (media) {
-		if (media.image) {
-			const cardModel = mediaCardTemplate(media);
 
-			const cardDOM = cardModel.getMediaCardDOM();
-			cardsSection.innerHTML += cardDOM;
-		}
+	medias.forEach(function (media) {
+		const cardModel = mediaCardTemplate(media);
+
+		const cardDOM = cardModel.getMediaCardDOM();
+		cardsSection.innerHTML += cardDOM;
 	});
 }
 
@@ -70,7 +70,7 @@ async function displayData() {
 }
 
 async function pictureLiked(likeButton) {
-	if (!likedPictures.includes(likeButton.target.attributes['liked-id'].value)){
+	if (!likedPictures.includes(likeButton.target.attributes['liked-id'].value)) {
 		let likeCount = likeButton.target.previousElementSibling;
 
 		likedPictures.push(likeButton.target.attributes['liked-id'].value);
@@ -78,7 +78,7 @@ async function pictureLiked(likeButton) {
 	}
 }
 
-async function pictureZoom(picture){
+async function pictureZoom(picture) {
 	const clickedPicture = picture.target;
 	const zoomedPictureArea = document.querySelector('.zoomed-picture');
 	const lightbox = document.querySelector('#lightbox');
@@ -90,37 +90,37 @@ async function pictureZoom(picture){
 	zoomedPictureArea.alt = clickedPicture.alt;
 }
 
-async function previousSlide(prevButton){
+async function previousSlide(prevButton) {
 	const previous = prevButton.target;
 	const pictureName = previous.nextElementSibling.alt;
 
 	console.log(pictureName);
 
 	for (let i = 0; i < mediaSlideshow.length; i++) {
-		if (mediaSlideshow[i].title == pictureName && i > 0){
+		if (mediaSlideshow[i].title == pictureName && i > 0) {
 			const zoomedPictureArea = document.querySelector('.zoomed-picture');
 
 			zoomedPictureArea.src = `assets/photographers_pictures/${mediaSlideshow[i - 1].image}`;
 			zoomedPictureArea.alt = mediaSlideshow[i - 1].title;
-		}		
+		}
 	}
 }
 
-async function nextSlide(nextButton){
+async function nextSlide(nextButton) {
 	const next = nextButton.target;
 	const pictureName = next.previousElementSibling.alt;
 
 	for (let i = 0; i < mediaSlideshow.length; i++) {
-		if (mediaSlideshow[i].title == pictureName && i < mediaSlideshow.length){
+		if (mediaSlideshow[i].title == pictureName && i < mediaSlideshow.length) {
 			const zoomedPictureArea = document.querySelector('.zoomed-picture');
 
 			zoomedPictureArea.src = `assets/photographers_pictures/${mediaSlideshow[i + 1].image}`;
 			zoomedPictureArea.alt = mediaSlideshow[i + 1].title;
-		}		
+		}
 	}
 }
 
-async function closeLightBox(){
+async function closeLightBox() {
 	const lightbox = document.querySelector('#lightbox');
 
 	lightbox.style.display = "none";

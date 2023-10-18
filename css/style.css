@@ -42,27 +42,33 @@
   justify-content: space-around;
   margin: 50px 100px;
 }
-.photograph-cards .picture-card {
+.photograph-cards .media-card {
   width: 350px;
   height: 350px;
 }
-.photograph-cards .picture-card img {
+.photograph-cards .media-card img {
   -o-object-fit: cover;
      object-fit: cover;
   width: 350px;
   height: 300px;
 }
-.photograph-cards .picture-card .info {
+.photograph-cards .media-card video {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 350px;
+  height: 300px;
+}
+.photograph-cards .media-card .info {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   color: #901c1c;
   font-size: 24px;
 }
-.photograph-cards .picture-card .info .title {
+.photograph-cards .media-card .info .title {
   width: 80%;
 }
-.photograph-cards .picture-card .info .like-button {
+.photograph-cards .media-card .info .like-button {
   margin-top: 15px;
 }
 

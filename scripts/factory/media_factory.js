@@ -1,10 +1,11 @@
 
 class mediaFactory {
 	constructor(data){
+
 		if (data.video){
-			let media = new Video(data);
+			return new Video(data);
 		} else if (data.image){
-			let media = new Picture(data);
+			return new Picture(data);
 		}
 	}
 }

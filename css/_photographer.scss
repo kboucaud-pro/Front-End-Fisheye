@@ -45,11 +45,17 @@
     justify-content: space-around;
     margin: 50px 100px;
 
-    .picture-card {
+    .media-card {
         width: 350px;
         height: 350px;
 
         img {
+            object-fit: cover;
+            width: 350px;
+            height: 300px;
+        }
+
+        video {
             object-fit: cover;
             width: 350px;
             height: 300px;
