@@ -31,7 +31,7 @@ async function getPhotographerWork(photographerId) {
 
 async function getPhotographerInfo() {
 	if (urlParameters.has('photographerId')) {
-		const photographerId = urlParameters.get('photographerId');
+		photographerId = urlParameters.get('photographerId');
 
 		const photographer = await getPhotographerById(photographerId);
 		const photographerWork = await getPhotographerWork(photographerId);
@@ -54,9 +54,8 @@ async function displayPhotographerCards(medias) {
 
 
 	medias.forEach(function (media) {
-		const cardModel = mediaCardTemplate(media);
 
-		const cardDOM = cardModel.getMediaCardDOM();
+		const cardDOM = media.getMediaCardDOM();
 		cardsSection.innerHTML += cardDOM;
 	});
 }
@@ -78,23 +77,22 @@ async function pictureLiked(likeButton) {
 	}
 }
 
-async function pictureZoom(picture) {
-	const clickedPicture = picture.target;
-	const zoomedPictureArea = document.querySelector('.zoomed-picture');
+async function mediaZoom(media) {
+	const clickedMedia = media.target;
+	const zoomedMediaArea = document.querySelector('.zoomed-media');
 	const lightbox = document.querySelector('#lightbox');
 
 	//position fixed
+	console.log(clickedMedia);
 
 	lightbox.style.display = "flex";
-	zoomedPictureArea.src = clickedPicture.src;
-	zoomedPictureArea.alt = clickedPicture.alt;
+	zoomedMediaArea.src = clickedMedia.src;
+	zoomedMediaArea.alt = clickedMedia.alt;
 }
 
 async function previousSlide(prevButton) {
 	const previous = prevButton.target;
 	const pictureName = previous.nextElementSibling.alt;
-
-	console.log(pictureName);
 
 	for (let i = 0; i < mediaSlideshow.length; i++) {
 		if (mediaSlideshow[i].title == pictureName && i > 0) {
@@ -126,23 +124,82 @@ async function closeLightBox() {
 	lightbox.style.display = "none";
 }
 
+async function sortMedias(option) {
+	if (option.originalTarget.classList.contains('active-choice')){
+		return ;
+	}
+
+	const sortMode = option.originalTarget.attributes['sort-value'].value;
+	let photographerWork = await getPhotographerWork(photographerId);
+
+	if ("date" == sortMode) {
+		photographerWork.sort(function (a, b) {
+			return a._date.localeCompare(b._date);
+		});
+	} else if ("likes" == sortMode) {
+		photographerWork.sort(function (a, b) {
+			return b._likes - a._likes;
+		});
+	} else if ("title" == sortMode) {
+		photographerWork.sort(function (a, b) {
+			return a._title.localeCompare(b._title);
+		});
+	}
+
+	const cardsSection = document.querySelector(".photograph-cards");
+
+	cardsSection.innerHTML = "";
+	displayPhotographerCards(photographerWork);
+	clearOptions(option);
+}
+
+async function displaySortOptions(activeOption){
+	const list = activeOption.originalTarget.parentNode;
+	let options = list.children;
+
+	for (var i = 0; i < options.length; i++) {
+		options[i].classList.add('choice-display');
+	}
+}
+
+async function clearOptions(option){
+	let activeOption = option.originalTarget;
+
+	const list = activeOption.parentNode;
+	let options = list.children;
+
+	for (var i = 0; i < options.length; i++) {
+		options[i].classList.remove('choice-display');
+		options[i].classList.remove('active-choice');
+	}
+
+	activeOption.classList.add('active-choice');
+	activeFilter = document.querySelector('.active-choice');
+	activeFilter.addEventListener('click', displaySortOptions);
+}
+
 async function init() {
 	await displayData();
 
 	const likeButtons = document.querySelectorAll('.like-button');
-	const pictures = document.querySelectorAll('.picture');
+	const medias = document.querySelectorAll('.media-card');
+	const sortOptions = document.querySelectorAll('.sort-option');
 	const previousSlideButton = document.querySelector('.previous-slide');
 	const nextSlideButton = document.querySelector('.next-slide');
 	const closeLightBoxButton = document.querySelector('.close-lightbox');
 
 	likeButtons.forEach(likeButton => likeButton.addEventListener('click', pictureLiked));
-	pictures.forEach(picture => picture.addEventListener('click', pictureZoom));
+	medias.forEach(picture => picture.addEventListener('click', mediaZoom));
+	sortOptions.forEach(option => option.addEventListener('click', sortMedias));
 	previousSlideButton.addEventListener('click', previousSlide);
 	nextSlideButton.addEventListener('click', nextSlide);
 	closeLightBoxButton.addEventListener('click', closeLightBox);
+	activeFilter.addEventListener('click', displaySortOptions);
 }
 
 let mediaSlideshow = [];
 let likedPictures = [];
+let photographerId = 0;
+let activeFilter = document.querySelector('.active-choice');
 
 init();

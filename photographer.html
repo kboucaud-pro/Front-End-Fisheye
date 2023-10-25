@@ -16,6 +16,20 @@
   <main id="main">
     <div class="photograph-header">
     </div>
+    <div class="sort">
+      <select>
+        <option value="likes">Popularité</option>
+        <option value="date">Date</option>
+        <option value="title">Titre</option>
+      </select>
+    </div>
+    <div class="visible-sort">Trier par 
+      <ul class="sort-choices">
+        <li class="active-choice sort-option" sort-value="likes">Popularité</li>
+        <li class="sort-option" sort-value="date">Date</li>
+        <li class="sort-option" sort-value="title">Titre</li>
+      </ul>
+    </div>
     <div class="photograph-cards">
 
     </div>
@@ -37,7 +51,7 @@
   </div>
   <div id="lightbox">
     <i class="fa-solid fa-chevron-left previous-slide"></i>
-    <img src="" alt="" class="zoomed-picture">
+    <img src="" alt="" class="zoomed-media">
     <i class="fa-solid fa-chevron-right next-slide"></i>
     <i class="fa-solid fa-xmark close-lightbox"></i>
     <span class="title"></span>
