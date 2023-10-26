@@ -22,7 +22,7 @@ async function getPhotographerWork(photographerId) {
 		if (element.photographerId == photographerId) {
 			element = new mediaFactory(element);
 			photographerWork.push(element);
-			mediaSlideshow.push({ image: element.image, title: element.title });
+			mediaSlideshow.push({ image: element._image, video: element._video, title: element._title });
 		}
 	});
 
@@ -77,44 +77,80 @@ async function pictureLiked(likeButton) {
 	}
 }
 
-async function mediaZoom(media) {
-	const clickedMedia = media.target;
-	const zoomedMediaArea = document.querySelector('.zoomed-media');
-	const lightbox = document.querySelector('#lightbox');
-
-	//position fixed
-	console.log(clickedMedia);
-
-	lightbox.style.display = "flex";
-	zoomedMediaArea.src = clickedMedia.src;
-	zoomedMediaArea.alt = clickedMedia.alt;
-}
-
-async function previousSlide(prevButton) {
-	const previous = prevButton.target;
-	const pictureName = previous.nextElementSibling.alt;
-
-	for (let i = 0; i < mediaSlideshow.length; i++) {
-		if (mediaSlideshow[i].title == pictureName && i > 0) {
-			const zoomedPictureArea = document.querySelector('.zoomed-picture');
-
-			zoomedPictureArea.src = `assets/photographers_pictures/${mediaSlideshow[i - 1].image}`;
-			zoomedPictureArea.alt = mediaSlideshow[i - 1].title;
+function getMediaPositionInSlideshow(source, type){
+	for (let i = 0; i < mediaSlideshow.length; i++){
+		if (type == "video"){
+			if (source.includes(mediaSlideshow[i].video)){
+				return i;
+			}
+		} else if (type == "image"){
+			if (source.includes(mediaSlideshow[i].image)){
+				return i;
+			}
 		}
 	}
 }
 
-async function nextSlide(nextButton) {
-	const next = nextButton.target;
-	const pictureName = next.previousElementSibling.alt;
+async function mediaZoom(media) {
+	const clickedMedia = media.target;
+	const lightbox = document.querySelector('#lightbox');
+	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
 
-	for (let i = 0; i < mediaSlideshow.length; i++) {
-		if (mediaSlideshow[i].title == pictureName && i < mediaSlideshow.length) {
-			const zoomedPictureArea = document.querySelector('.zoomed-picture');
+	//position fixed
+	lightbox.style.display = "flex";
 
-			zoomedPictureArea.src = `assets/photographers_pictures/${mediaSlideshow[i + 1].image}`;
-			zoomedPictureArea.alt = mediaSlideshow[i + 1].title;
+	if (clickedMedia.localName == 'img'){
+		mediaZoomedArea.innerHTML = /*html */
+		`<img src="${clickedMedia.src}" alt="${clickedMedia.alt}" class="zoomed-media">`;
+		currentLightBoxPosition = getMediaPositionInSlideshow(clickedMedia.src, 'image');
+	} else if (clickedMedia.localName == 'video'){
+		mediaZoomedArea.innerHTML = /*html */
+		`<video controls class="zoomed-media"><source src="${clickedMedia.childNodes[0].src}"></video>`;
+		currentLightBoxPosition = getMediaPositionInSlideshow(clickedMedia.childNodes[0].src, 'video');
+	}
+}
+
+async function previousSlide(prevButton) {
+	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
+
+	if (currentLightBoxPosition > 0){
+		let newSlide = mediaSlideshow[currentLightBoxPosition - 1];
+
+		if (newSlide.video) {
+			const source = `assets/photographers_pictures/${newSlide.video}`;
+
+			mediaZoomedArea.innerHTML = /*html */
+			`<video controls class="zoomed-media"><source src="${source}"></video>`;
+		} else if (newSlide.image) {
+			const source = `assets/photographers_pictures/${newSlide.image}`;
+
+			mediaZoomedArea.innerHTML = /*html */
+			`<img src="${source}" alt="${newSlide.title}" class="zoomed-media">`;
 		}
+
+		currentLightBoxPosition--;
+	}
+}
+
+async function nextSlide(nextButton) {
+	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
+
+	if (currentLightBoxPosition < mediaSlideshow.length - 1){
+		let newSlide = mediaSlideshow[currentLightBoxPosition + 1];
+
+		if (newSlide.video) {
+			const source = `assets/photographers_pictures/${newSlide.video}`;
+
+			mediaZoomedArea.innerHTML = /*html */
+			`<video controls class="zoomed-media"><source src="${source}"></video>`;
+		} else if (newSlide.image) {
+			const source = `assets/photographers_pictures/${newSlide.image}`;
+
+			mediaZoomedArea.innerHTML = /*html */
+			`<img src="${source}" alt="${newSlide.title}" class="zoomed-media">`;
+		}
+
+		currentLightBoxPosition++;
 	}
 }
 
@@ -201,5 +237,6 @@ let mediaSlideshow = [];
 let likedPictures = [];
 let photographerId = 0;
 let activeFilter = document.querySelector('.active-choice');
+let currentLightBoxPosition = -1;
 
 init();

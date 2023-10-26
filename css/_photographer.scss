@@ -139,12 +139,14 @@
     align-items: center;
     justify-content: center;
 
-    .zoomed-media {
-        max-width: 75%;
-        max-height: 75%;
-        object-fit: cover;
+    .media-zoomed-area {
+        .zoomed-media {
+            max-width: 75%;
+            max-height: 75%;
+            object-fit: cover;
+        }
     }
-
+    
     .previous-slide {
         margin: 15px;
     }
