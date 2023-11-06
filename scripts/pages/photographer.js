@@ -11,7 +11,7 @@ async function getPhotographerById(photographerId) {
 	return photographer;
 }
 
-async function getPhotographerWork(photographerId) {
+async function getPhotographerWork(photographerId, sortMode = "likes") {
 	mediaSlideshow = [];
 	const file = await fetch('data/photographers.json');
 	const fileContent = await file.json();
@@ -20,10 +20,28 @@ async function getPhotographerWork(photographerId) {
 	let photographerWork = [];
 	works.forEach(element => {
 		if (element.photographerId == photographerId) {
-			element = new mediaFactory(element);
+			element = createMedia(element);
 			photographerWork.push(element);
-			mediaSlideshow.push({ image: element._image, video: element._video, title: element._title });
 		}
+	});
+
+	//sort work with selected parameter
+	if ("date" == sortMode) {
+		photographerWork.sort(function (a, b) {
+			return a._date.localeCompare(b._date);
+		})
+	} else if ("likes" == sortMode) {
+		photographerWork.sort(function (a, b) {
+			return b._likes - a._likes;
+		});
+	} else if ("title" == sortMode) {
+		photographerWork.sort(function (a, b) {
+			return a._title.localeCompare(b._title);
+		});
+	}
+
+	photographerWork.forEach(element => {
+		mediaSlideshow.push({ image: element._image, video: element._video, title: element._title });
 	});
 
 	return photographerWork;
@@ -132,7 +150,7 @@ async function previousSlide(prevButton) {
 	}
 }
 
-async function nextSlide(nextButton) {
+async function nextSlide() {
 	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
 
 	if (currentLightBoxPosition < mediaSlideshow.length - 1){
@@ -166,27 +184,16 @@ async function sortMedias(option) {
 	}
 
 	const sortMode = option.originalTarget.attributes['sort-value'].value;
-	let photographerWork = await getPhotographerWork(photographerId);
-
-	if ("date" == sortMode) {
-		photographerWork.sort(function (a, b) {
-			return a._date.localeCompare(b._date);
-		});
-	} else if ("likes" == sortMode) {
-		photographerWork.sort(function (a, b) {
-			return b._likes - a._likes;
-		});
-	} else if ("title" == sortMode) {
-		photographerWork.sort(function (a, b) {
-			return a._title.localeCompare(b._title);
-		});
-	}
+	let photographerWork = await getPhotographerWork(photographerId, sortMode);
 
 	const cardsSection = document.querySelector(".photograph-cards");
 
 	cardsSection.innerHTML = "";
 	displayPhotographerCards(photographerWork);
 	clearOptions(option);
+
+	const medias = document.querySelectorAll('.media-card');
+	medias.forEach(picture => picture.addEventListener('click', mediaZoom));
 }
 
 async function displaySortOptions(activeOption){
