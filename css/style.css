@@ -59,6 +59,7 @@
   list-style: none;
   position: absolute;
   left: 100px;
+  top: -25px;
 }
 .visible-sort ul li {
   background-color: #901C1C;
