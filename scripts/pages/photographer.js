@@ -95,14 +95,14 @@ async function pictureLiked(likeButton) {
 	}
 }
 
-function getMediaPositionInSlideshow(source, type){
-	for (let i = 0; i < mediaSlideshow.length; i++){
-		if (type == "video"){
-			if (source.includes(mediaSlideshow[i].video)){
+function getMediaPositionInSlideshow(source, type) {
+	for (let i = 0; i < mediaSlideshow.length; i++) {
+		if (type == "video") {
+			if (source.includes(mediaSlideshow[i].video)) {
 				return i;
 			}
-		} else if (type == "image"){
-			if (source.includes(mediaSlideshow[i].image)){
+		} else if (type == "image") {
+			if (source.includes(mediaSlideshow[i].image)) {
 				return i;
 			}
 		}
@@ -117,13 +117,13 @@ async function mediaZoom(media) {
 	//position fixed
 	lightbox.style.display = "flex";
 
-	if (clickedMedia.localName == 'img'){
+	if (clickedMedia.localName == 'img') {
 		mediaZoomedArea.innerHTML = /*html */
-		`<img src="${clickedMedia.src}" alt="${clickedMedia.alt}" class="zoomed-media">`;
+			`<img src="${clickedMedia.src}" alt="${clickedMedia.alt}" class="zoomed-media">`;
 		currentLightBoxPosition = getMediaPositionInSlideshow(clickedMedia.src, 'image');
-	} else if (clickedMedia.localName == 'video'){
+	} else if (clickedMedia.localName == 'video') {
 		mediaZoomedArea.innerHTML = /*html */
-		`<video controls class="zoomed-media"><source src="${clickedMedia.childNodes[0].src}"></video>`;
+			`<video controls class="zoomed-media"><source src="${clickedMedia.childNodes[0].src}"></video>`;
 		currentLightBoxPosition = getMediaPositionInSlideshow(clickedMedia.childNodes[0].src, 'video');
 	}
 }
@@ -131,19 +131,19 @@ async function mediaZoom(media) {
 async function previousSlide(prevButton) {
 	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
 
-	if (currentLightBoxPosition > 0){
+	if (currentLightBoxPosition > 0) {
 		let newSlide = mediaSlideshow[currentLightBoxPosition - 1];
 
 		if (newSlide.video) {
 			const source = `assets/photographers_pictures/${newSlide.video}`;
 
 			mediaZoomedArea.innerHTML = /*html */
-			`<video controls class="zoomed-media"><source src="${source}"></video>`;
+				`<video controls class="zoomed-media"><source src="${source}"></video>`;
 		} else if (newSlide.image) {
 			const source = `assets/photographers_pictures/${newSlide.image}`;
 
 			mediaZoomedArea.innerHTML = /*html */
-			`<img src="${source}" alt="${newSlide.title}" class="zoomed-media">`;
+				`<img src="${source}" alt="${newSlide.title}" class="zoomed-media">`;
 		}
 
 		currentLightBoxPosition--;
@@ -153,22 +153,35 @@ async function previousSlide(prevButton) {
 async function nextSlide() {
 	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
 
-	if (currentLightBoxPosition < mediaSlideshow.length - 1){
+	if (currentLightBoxPosition < mediaSlideshow.length - 1) {
 		let newSlide = mediaSlideshow[currentLightBoxPosition + 1];
 
 		if (newSlide.video) {
 			const source = `assets/photographers_pictures/${newSlide.video}`;
 
 			mediaZoomedArea.innerHTML = /*html */
-			`<video controls class="zoomed-media"><source src="${source}"></video>`;
+				`<video controls class="zoomed-media"><source src="${source}"></video>`;
 		} else if (newSlide.image) {
 			const source = `assets/photographers_pictures/${newSlide.image}`;
 
 			mediaZoomedArea.innerHTML = /*html */
-			`<img src="${source}" alt="${newSlide.title}" class="zoomed-media">`;
+				`<img src="${source}" alt="${newSlide.title}" class="zoomed-media">`;
 		}
 
 		currentLightBoxPosition++;
+	}
+}
+
+async function navigateKeyboard(e) {
+	switch (e.key) {
+		case "ArrowRight":
+			nextSlide();
+			break;
+		case "ArrowLeft":
+			previousSlide();
+			break;
+		default:
+			return;
 	}
 }
 
@@ -179,8 +192,8 @@ async function closeLightBox() {
 }
 
 async function sortMedias(option) {
-	if (option.originalTarget.classList.contains('active-choice')){
-		return ;
+	if (option.originalTarget.classList.contains('active-choice')) {
+		return;
 	}
 
 	const sortMode = option.originalTarget.attributes['sort-value'].value;
@@ -196,7 +209,7 @@ async function sortMedias(option) {
 	medias.forEach(picture => picture.addEventListener('click', mediaZoom));
 }
 
-async function displaySortOptions(activeOption){
+async function displaySortOptions(activeOption) {
 	const list = activeOption.originalTarget.parentNode;
 	let options = list.children;
 
@@ -205,7 +218,7 @@ async function displaySortOptions(activeOption){
 	}
 }
 
-async function clearOptions(option){
+async function clearOptions(option) {
 	let activeOption = option.originalTarget;
 
 	const list = activeOption.parentNode;
@@ -238,6 +251,8 @@ async function init() {
 	nextSlideButton.addEventListener('click', nextSlide);
 	closeLightBoxButton.addEventListener('click', closeLightBox);
 	activeFilter.addEventListener('click', displaySortOptions);
+
+	document.addEventListener('keydown', navigateKeyboard);
 }
 
 let mediaSlideshow = [];
