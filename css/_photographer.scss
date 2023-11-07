@@ -272,5 +272,10 @@ form {
 
     #modal-message {
         height: 170px;
+        width: 100%;
+        resize: none;
+        border: none;
+        border-radius: 5px;
+        font-size: 36px;
     }
 }
