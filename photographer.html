@@ -10,6 +10,7 @@
 </head>
 
 <body>
+  <div id="modal-background"></div>
   <header>
     <a href="index.html"><img src="assets/images/logo.png" class="logo" /></a>
   </header>
@@ -40,12 +41,18 @@
         <h2>Contactez-moi</h2>
         <img src="assets/icons/close.svg" onclick="closeModal()" />
       </header>
-      <form>
+      <form onsubmit="return submitForm()">
         <div>
           <label>Prénom</label>
-          <input />
+          <input type="text" id="modal-first-name" name="first_name"/>
+          <label>Nom</label>
+          <input type="text" id="modal-last-name" name="last_name"/>
+          <label>Email</label>
+          <input type="email" id="modal-email" name="email"/>
+          <label>Votre message</label>
+          <input id="modal-message" type="text" name="message"/>
         </div>
-        <button class="contact_button">Envoyer</button>
+        <button type="submit" class="contact_button">Envoyer</button>
       </form>
     </div>
   </div>
