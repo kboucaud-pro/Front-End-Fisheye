@@ -165,6 +165,10 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.contact_button:hover {
+  background-color: #D3573C;
+  color: black;
+}
 
 #modal-background {
   background: rgba(196, 196, 196, 0.4);

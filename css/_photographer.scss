@@ -184,6 +184,11 @@
     background-color: #901c1c;
     border-radius: 5px;
     cursor: pointer;
+
+    &:hover {
+        background-color: #D3573C;
+        color: black;
+    }
 }
 
 #modal-background {
