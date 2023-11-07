@@ -78,12 +78,25 @@ async function displayPhotographerCards(medias) {
 	});
 }
 
+async function displayCostAndLikes(photographer){
+	let totalLikes = 0;
+	let costAndPriceArea = document.querySelector('.cost-and-likes');
+
+	photographer.media.forEach(work => {
+		totalLikes += work._likes;
+	});
+
+	const costAndPriceModel = costAndLikesTemplate({totalLikes: totalLikes, cost: photographer.info.price});
+	costAndPriceArea.innerHTML = costAndPriceModel.getCostAndLikesCardDOM();
+}
+
 async function displayData() {
 
 	const photographer = await getPhotographerInfo();
 
 	displayPhotographerHeader(photographer.info);
 	displayPhotographerCards(photographer.media);
+	displayCostAndLikes(photographer);
 }
 
 async function pictureLiked(likeButton) {

@@ -182,6 +182,20 @@
     display: none;
 }
 
+.cost-and-likes {
+    position: fixed;
+    bottom: 0;
+    right: 10%;
+    background-color: #DB8876;
+    font-size: 24px;
+    width: 350px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+}
+
 .modal {
     position: absolute;
     top: 10%;
