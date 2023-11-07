@@ -58,7 +58,7 @@
         padding: 5px;
         font-size: 18px;
         border-radius: 5px;
-        width: 100px;
+        width: 120px;
         list-style: none;
         position: absolute;
         left: 100px;
@@ -68,14 +68,30 @@
             background-color: #901C1C;
             padding: 5px;
             display: none;
+
+            .fa-solid {
+                display: none !important;
+            }
         }
 
         .active-choice {
             display: block;
+            
+            .fa-chevron-down {
+                display: inline !important;
+            }
         }
 
         .choice-display {
             display: block;
+
+            .fa-chevron-down {
+                display: none !important;
+            }
+
+            .fa-chevron-up {
+                display: inline !important;
+            }
         }
 
         .choice-display + .choice-display {
