@@ -8,7 +8,7 @@ function photographerTemplate(data) {
         const articleDOM = /* html */ 
         `<article>
         <a href="photographer.html?photographerId=${id}">
-        <img src="${picture}">
+        <img src="${picture}" alt="${name}">
         </a>
         <h2>${name}</h2>
         <p class="pg-location">${city},${country}</p>

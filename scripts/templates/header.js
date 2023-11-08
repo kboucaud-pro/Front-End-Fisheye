@@ -13,7 +13,7 @@ function headerTemplate(data) {
         <p class="pg-tagline">${tagline}</p>
 		</div>
 		<button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-		<img src="${picture}">
+		<img src="${picture}" alt="profile-picture">
 		`;
 
         return (articleDOM);
