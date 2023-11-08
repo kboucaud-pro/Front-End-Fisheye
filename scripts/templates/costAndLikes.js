@@ -2,6 +2,9 @@
 function costAndLikesTemplate(data) {
     const { totalLikes, cost} = data;
 
+    /**
+     * @returns string DOMPart
+     */
     function getCostAndLikesCardDOM() {
 
         const articleDOM = /* html */ 

@@ -1,3 +1,7 @@
+
+/**
+ * @returns null
+ */
 function displayModal() {
     const modal = document.getElementById("contact_modal");
     const modalBackground = document.getElementById("modal-background");
@@ -5,6 +9,9 @@ function displayModal() {
 	modal.style.display = "block";
 }
 
+/**
+ * @returns null
+ */
 function closeModal() {
     const modal = document.getElementById("contact_modal");
     const modalBackground = document.getElementById("modal-background");
@@ -12,6 +19,9 @@ function closeModal() {
     modal.style.display = "none";
 }
 
+/**
+ * @returns boolean
+ */
 function submitForm(){
     const firstName = document.getElementById("modal-first-name").value;
     const lastName = document.getElementById("modal-last-name").value;

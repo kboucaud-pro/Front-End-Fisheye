@@ -3,6 +3,9 @@ function photographerTemplate(data) {
 
     const picture = `assets/photographers/${portrait}`;
 
+    /**
+     * @returns string DOMPart
+     */
     function getUserCardDOM() {
 
         const articleDOM = /* html */ 

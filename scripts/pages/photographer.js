@@ -2,6 +2,10 @@
 
 const urlParameters = new URLSearchParams(window.location.search);
 
+/**
+ * @param {*} photographerId 
+ * @returns Object photographer
+ */
 async function getPhotographerById(photographerId) {
 	const file = await fetch('data/photographers.json');
 	const fileContent = await file.json();
@@ -11,6 +15,11 @@ async function getPhotographerById(photographerId) {
 	return photographer;
 }
 
+/**
+ * @param {*} photographerId 
+ * @param {*} sortMode 
+ * @returns Collection Works
+ */
 async function getPhotographerWork(photographerId, sortMode = "likes") {
 	mediaSlideshow = [];
 	const file = await fetch('data/photographers.json');
@@ -47,6 +56,9 @@ async function getPhotographerWork(photographerId, sortMode = "likes") {
 	return photographerWork;
 }
 
+/**
+ * @returns object {info: photographerInfo, media: photographerWorks}
+ */
 async function getPhotographerInfo() {
 	if (urlParameters.has('photographerId')) {
 		photographerId = urlParameters.get('photographerId');
@@ -58,6 +70,9 @@ async function getPhotographerInfo() {
 	}
 }
 
+/**
+ * @param {*} info 
+ */
 async function displayPhotographerHeader(info) {
 	const headerSection = document.querySelector(".photograph-header");
 
@@ -67,6 +82,9 @@ async function displayPhotographerHeader(info) {
 
 }
 
+/**
+ * @param {*} medias 
+ */
 async function displayPhotographerCards(medias) {
 	const cardsSection = document.querySelector(".photograph-cards");
 
@@ -78,6 +96,9 @@ async function displayPhotographerCards(medias) {
 	});
 }
 
+/**
+ * @param {*} photographer 
+ */
 async function displayCostAndLikes(photographer){
 	let totalLikes = 0;
 	let costAndPriceArea = document.querySelector('.cost-and-likes');
@@ -90,6 +111,9 @@ async function displayCostAndLikes(photographer){
 	costAndPriceArea.innerHTML = costAndPriceModel.getCostAndLikesCardDOM();
 }
 
+/**
+ * 
+ */
 async function displayData() {
 
 	const photographer = await getPhotographerInfo();
@@ -99,6 +123,9 @@ async function displayData() {
 	displayCostAndLikes(photographer);
 }
 
+/**
+ * @param {*} likeButton 
+ */
 async function pictureLiked(likeButton) {
 	if (!likedPictures.includes(likeButton.target.attributes['liked-id'].value)) {
 		let likeCount = likeButton.target.previousElementSibling;
@@ -108,6 +135,11 @@ async function pictureLiked(likeButton) {
 	}
 }
 
+/**
+ * @param {*} source 
+ * @param {*} type 
+ * @returns integer
+ */
 function getMediaPositionInSlideshow(source, type) {
 	for (let i = 0; i < mediaSlideshow.length; i++) {
 		if (type == "video") {
@@ -122,6 +154,9 @@ function getMediaPositionInSlideshow(source, type) {
 	}
 }
 
+/**
+ * @param {*} media 
+ */
 async function mediaZoom(media) {
 	const clickedMedia = media.target;
 	const lightbox = document.querySelector('#lightbox');
@@ -141,7 +176,10 @@ async function mediaZoom(media) {
 	}
 }
 
-async function previousSlide(prevButton) {
+/**
+ * 
+ */
+async function previousSlide() {
 	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
 
 	if (currentLightBoxPosition > 0) {
@@ -163,6 +201,9 @@ async function previousSlide(prevButton) {
 	}
 }
 
+/**
+ * 
+ */
 async function nextSlide() {
 	const mediaZoomedArea = document.querySelector('.media-zoomed-area');
 
@@ -185,6 +226,9 @@ async function nextSlide() {
 	}
 }
 
+/**
+ * @param Event e 
+ */
 async function navigateKeyboard(e) {
 	switch (e.key) {
 		case "ArrowRight":
@@ -198,12 +242,19 @@ async function navigateKeyboard(e) {
 	}
 }
 
+/**
+ * 
+ */
 async function closeLightBox() {
 	const lightbox = document.querySelector('#lightbox');
 
 	lightbox.style.display = "none";
 }
 
+/**
+ * @param {*} option 
+ * @returns 
+ */
 async function sortMedias(option) {
 	if (option.originalTarget.classList.contains('active-choice')) {
 		return;
@@ -222,6 +273,9 @@ async function sortMedias(option) {
 	medias.forEach(picture => picture.addEventListener('click', mediaZoom));
 }
 
+/**
+ * @param {*} activeOption 
+ */
 async function displaySortOptions(activeOption) {
 	const list = activeOption.originalTarget.parentNode;
 	let options = list.children;
@@ -231,6 +285,9 @@ async function displaySortOptions(activeOption) {
 	}
 }
 
+/**
+ * @param {*} option 
+ */
 async function clearOptions(option) {
 	let activeOption = option.originalTarget;
 
@@ -247,6 +304,9 @@ async function clearOptions(option) {
 	activeFilter.addEventListener('click', displaySortOptions);
 }
 
+/**
+ * 
+ */
 async function init() {
 	await displayData();
 

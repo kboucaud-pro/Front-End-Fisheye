@@ -1,3 +1,7 @@
+
+/**
+ * @returns {photographers}
+ */
 async function getPhotographers() {
     const file = await fetch('data/photographers.json');
     const fileContent = await file.json();
@@ -8,6 +12,10 @@ async function getPhotographers() {
     })
 }
 
+/**
+ * @param {*} photographers 
+ * @returns null
+ */
 async function displayData(photographers) {
     const photographersSection = document.querySelector(".photographer_section");
 
@@ -18,6 +26,9 @@ async function displayData(photographers) {
     });
 }
 
+/**
+ * @returns null
+ */
 async function init() {
     // Récupère les datas des photographes
     const { photographers } = await getPhotographers();
