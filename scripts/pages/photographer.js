@@ -311,14 +311,16 @@ async function init() {
 	await displayData();
 
 	const likeButtons = document.querySelectorAll('.like-button');
-	const medias = document.querySelectorAll('.media-card');
+	const videos = document.querySelectorAll('.video');
+	const pictures = document.querySelectorAll('.picture');
 	const sortOptions = document.querySelectorAll('.sort-option');
 	const previousSlideButton = document.querySelector('.previous-slide');
 	const nextSlideButton = document.querySelector('.next-slide');
 	const closeLightBoxButton = document.querySelector('.close-lightbox');
 
 	likeButtons.forEach(likeButton => likeButton.addEventListener('click', pictureLiked));
-	medias.forEach(picture => picture.addEventListener('click', mediaZoom));
+	pictures.forEach(picture => picture.addEventListener('click', mediaZoom));
+	videos.forEach(video => video.addEventListener('click', mediaZoom));
 	sortOptions.forEach(option => option.addEventListener('click', sortMedias));
 	previousSlideButton.addEventListener('click', previousSlide);
 	nextSlideButton.addEventListener('click', nextSlide);
