@@ -129,9 +129,11 @@ async function displayData() {
 async function pictureLiked(likeButton) {
 	if (!likedPictures.includes(likeButton.target.attributes['liked-id'].value)) {
 		let likeCount = likeButton.target.previousElementSibling;
+		let totalLikes = document.querySelector('.totalLikes');
 
 		likedPictures.push(likeButton.target.attributes['liked-id'].value);
 		likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1;
+		totalLikes.innerHTML = parseInt(totalLikes.textContent) + 1 + ' <span class="fa-solid fa-heart"></span>';
 	}
 }
 
